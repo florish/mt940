@@ -4,6 +4,14 @@ class MT940::Rabobank < MT940::Base
     self if args[0].match(/^:940:/)
   end
 
+  def parse_tag_25
+    @line.gsub!('.','')
+    if @line.match(/^:\d{2}:([A-Z0-9]{18}) (\w{3})/)
+      @bank_account = $1.gsub(/^0/,'')
+      @tag86 = false
+    end
+  end
+
   def parse_tag_61
     if @line.match(/^:61:(\d{6})(C|D)(\d+),(\d{0,2})\w{4}\w{1}(\d{9}|NONREF)(.+)$/)
       type = $2 == 'D' ? -1 : 1
@@ -17,10 +25,10 @@ class MT940::Rabobank < MT940::Base
 
   def parse_tag_86
     if @line.match(/^:86:(.*)$/)
-      if @transaction.description.nil? 
-        @transaction.description= $1.strip 
+      if @transaction.description.nil?
+        @transaction.description= $1.strip
       else
-        @transaction.description += ' ' +$1.strip 
+        @transaction.description += ' ' +$1.strip
       end
     end
   end

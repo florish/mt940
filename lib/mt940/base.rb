@@ -5,7 +5,7 @@ module MT940
     attr_accessor :bank
 
     def self.transactions(file)
-      file  = File.open(file) if file.is_a?(String) 
+      file  = File.open(file) if file.is_a?(String)
       if file.is_a?(File) || file.is_a?(Tempfile)
         first_line  = file.readline
         second_line = file.readline unless file.eof?
@@ -23,7 +23,12 @@ module MT940
       @tag86 = false
       @lines.each do |line|
         @line = line
-        @line.match(/^:(\d{2}F?):/) ? eval('parse_tag_'+ $1) : parse_line
+        if @line.match(/^:(\d{2}F?):/)
+          method_name = "parse_tag_#{$1}".to_sym
+          self.send(method_name) if self.respond_to?(method_name, true) # true includes private methods
+        else
+          parse_line
+        end
       end
       @transactions
     end
@@ -88,6 +93,7 @@ module MT940
     end
 
     def parse_date(string)
+      require 'date'
       Date.new(2000 + string[0..1].to_i, string[2..3].to_i, string[4..5].to_i) if string
     end
 
