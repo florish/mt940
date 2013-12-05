@@ -14,7 +14,7 @@ class TestMt940Rabobank < Test::Unit::TestCase
 
   context 'Transaction' do
     should 'have a bank_account' do
-      assert_equal '129199348', @transaction.bank_account
+      assert_equal 'NL40RABO0399939999', @transaction.bank_account
     end
 
     context 'Contra account' do
