@@ -1,12 +1,12 @@
 PATH
   remote: .
   specs:
-    mt940 (0.6.6)
+    mt940 (0.6.7.pre.florish)
 
 GEM
   remote: http://rubygems.org/
   specs:
-    rake (0.8.7)
+    rake (10.1.0)
     shoulda (2.11.3)
 
 PLATFORMS
@@ -14,5 +14,5 @@ PLATFORMS
 
 DEPENDENCIES
   mt940!
-  rake (= 0.8.7)
+  rake (= 10.1.0)
   shoulda
